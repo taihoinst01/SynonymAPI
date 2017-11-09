@@ -1,0 +1,14 @@
+{
+  "name": "synonym-api",
+  "version": "0.0.0",
+  "description": "SynonymAPI",
+  "scripts": {
+    "start": "node server"
+  },
+  "engines": {
+    "node": "~6.10.x"
+  },
+  "author": {
+    "name": "songhj"
+  }
+}
