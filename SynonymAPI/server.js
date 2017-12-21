@@ -1,8 +1,39 @@
 'use strict';
 var http = require('http');
 var port = process.env.PORT || 1337;
+var express = require('express');
+var bodyParser = require('body-parser');
+var swaggerize = require('swaggerize-express');
+var swaggerUi = require('swaggerize-ui'); // second change
+var path = require('path');
 
-http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World\n');
-}).listen(port);
+var app = express();
+
+var server = http.createServer(app);
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(swaggerize({
+    api: path.resolve('./config/swagger.json'), // third change
+    handlers: path.resolve('./handlers'),
+    docspath: '/swagger' // fourth change
+}));
+
+// change four
+app.use('/docs', swaggerUi({
+    docs: '/swagger'
+}));
+
+
+server.listen(port, function () { // fifth and final change
+    console.log("start server port : " + port);
+});
+
+app.get('/', (req, res) => {
+    console.log("/start");
+    res.send('api server\n');
+});
