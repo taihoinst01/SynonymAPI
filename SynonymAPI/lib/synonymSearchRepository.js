@@ -37,7 +37,11 @@ module.exports = {
 
         return dbHelper.sqlExecute(sqlText, res);
     },
+    /**
+    * summary: 유의어 목록 조회
+    */
     selectWordSynonList: function (req, res) {
+        var wordParam = req.query.word;
         var sqlText =
             "       SELECT SS.WORD_SEQ as wordSeq,     \n"
             + "            SS.SYNON_SEQ as synonSeq,   \n"
@@ -46,10 +50,14 @@ module.exports = {
             + "            SS.WORD_SYNON_SCORE as wordSynonScore, \n"
             + "            SS.SYNONYM as synonym       \n"
             + "     FROM TBL_WORD_SYNON_SCORE SS       \n"
-            + "     WHERE SS.WORD = '" + req.query.word + "' \n";
-        + "     ORDER BY SS.WORD_SEQ, SS.WORD_SYNON_SCORE DESC, SS.SYNON_SEQ \n"
+            + "     WHERE SS.WORD = '" + wordParam + "' \n"
+            + "     ORDER BY SS.WORD_SEQ, SS.WORD_SYNON_SCORE DESC, SS.SYNON_SEQ \n";
+
         return dbHelper.sqlSelect(sqlText, res);
     },
+    /**
+    * summary: 유의어 스코어 수정 (+1)
+    */
     updateWordSynonScore: function (req, res) {
         var sqlText = [];
         sqlText.push(
@@ -61,6 +69,9 @@ module.exports = {
 
         return dbHelper.sqlExecute(sqlText, res)
     },
+    /**
+    * summary: 유의어 등록
+    */
     insertWordSynonScore: function (req, res) {
         var sqlText = [];
         sqlText.push(
